@@ -13,5 +13,7 @@ namespace ContactManager.Models
             : base("DefaultConnection")
         {
         }
+
+        public System.Data.Entity.DbSet<ContactManager.Models.Contact> Contacts { get; set; }
     }
 }
