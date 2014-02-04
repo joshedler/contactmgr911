@@ -1,3 +1,6 @@
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+
 namespace ContactManager.Migrations
 {
     using System;
@@ -11,6 +14,13 @@ namespace ContactManager.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
+        }
+
+        private void AddRoles(ApplicationDbContext context)
+        {
+            var rm = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+            
+            rm.Create(new IdentityRole(RoleNames.CanEdit));
         }
 
         protected override void Seed(ContactManager.Models.ApplicationDbContext context)
@@ -27,6 +37,7 @@ namespace ContactManager.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+            AddRoles(context);
 
             context.Contacts.AddOrUpdate(p => p.Name,
                 new Contact
