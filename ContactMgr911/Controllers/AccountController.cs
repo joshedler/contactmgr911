@@ -59,7 +59,7 @@ namespace ContactManager.Controllers
 
         //
         // GET: /Account/Register
-        [AllowAnonymous]
+        // DISALBE LOCAL REGISTER: [AllowAnonymous]
         public ActionResult Register()
         {
             return View();
@@ -68,7 +68,7 @@ namespace ContactManager.Controllers
         //
         // POST: /Account/Register
         [HttpPost]
-        [AllowAnonymous]
+        // DISABLE LOCAL REGISTER: [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
