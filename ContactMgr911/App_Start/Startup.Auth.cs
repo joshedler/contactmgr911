@@ -3,7 +3,7 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
 
-namespace ContactMgr911
+namespace ContactManager
 {
     public partial class Startup
     {

@@ -1,8 +1,9 @@
-﻿using Microsoft.Owin;
+﻿using ContactManager;
+using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartupAttribute(typeof(ContactMgr911.Startup))]
-namespace ContactMgr911
+[assembly: OwinStartup(typeof(Startup))]
+namespace ContactManager
 {
     public partial class Startup
     {

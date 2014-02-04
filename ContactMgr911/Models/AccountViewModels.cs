@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ContactMgr911.Models
+namespace ContactManager.Models
 {
     public class ExternalLoginConfirmationViewModel
     {
