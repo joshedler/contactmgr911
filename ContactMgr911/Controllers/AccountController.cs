@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using ContactManager.Models;
@@ -122,7 +124,10 @@ namespace ContactManager.Controllers
                 : "";
             ViewBag.HasLocalPassword = HasPassword();
             ViewBag.ReturnUrl = Url.Action("Manage");
-            return View();
+            var account = UserManager.FindById(User.Identity.GetUserId());
+            var roles = UserManager.GetRoles(User.Identity.GetUserId());
+            var model = new UserInfoViewModel() { UserName = account.UserName, Email = account.Email, Roles = string.Join(", ", roles) };
+            return View(model);
         }
 
         //
@@ -261,7 +266,12 @@ namespace ContactManager.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser() { UserName = model.UserName };
+
+                var externalIdentity = HttpContext.GetOwinContext().Authentication.GetExternalIdentityAsync(DefaultAuthenticationTypes.ExternalCookie);
+                var emailClaim = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
+                var email = emailClaim != null ? emailClaim.Value : null;
+
+                var user = new ApplicationUser() { UserName = model.UserName, Email = email };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

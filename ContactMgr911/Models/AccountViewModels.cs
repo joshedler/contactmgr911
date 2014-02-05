@@ -9,6 +9,18 @@ namespace ContactManager.Models
         public string UserName { get; set; }
     }
 
+    public class UserInfoViewModel
+    {
+        [Display(Name = "User name")]
+        public string UserName { get; set; }
+
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Display(Name = "Roles")]
+        public string Roles { get; set; }
+    }
+
     public class ManageUserViewModel
     {
         [Required]

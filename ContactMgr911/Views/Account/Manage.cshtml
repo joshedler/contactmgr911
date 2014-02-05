@@ -4,6 +4,8 @@
     ViewBag.Title = "Manage Account";
 }
 
+@model UserInfoViewModel
+
 <h2>@ViewBag.Title.</h2>
 
 <p class="text-success">@ViewBag.StatusMessage</p>
@@ -15,7 +17,20 @@
         }
         else
         {
-            @Html.Partial("_SetPasswordPartial")
+            <table class="table table-bordered">
+                <tr>
+                    <td>@Html.LabelFor(model => model.UserName)</td>
+                    <td>@Html.DisplayFor(model => model.UserName)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.Email)</td>
+                    <td>@Html.DisplayFor(model => model.Email)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(model => model.Roles)</td>
+                    <td>@Html.DisplayFor(model => model.Roles)</td>
+                </tr>
+            </table>
         }
 
         <section id="externalLogins">
