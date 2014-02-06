@@ -7,12 +7,15 @@ using ContactManager.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
+using NLog;
 
 namespace ContactManager.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
         public AccountController()
             : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
         {
@@ -207,6 +210,7 @@ namespace ContactManager.Controllers
             var user = await UserManager.FindAsync(loginInfo.Login);
             if (user != null)
             {
+                _logger.Info("User {0} ({1}) logged in.", user.UserName, user.Email);
                 await SignInAsync(user, isPersistent: false);
                 return RedirectToLocal(returnUrl);
             }
@@ -278,6 +282,7 @@ namespace ContactManager.Controllers
                     result = await UserManager.AddLoginAsync(user.Id, info.Login);
                     if (result.Succeeded)
                     {
+                        _logger.Info("Created user {0} ({1}).", user.UserName, user.Email);
                         await SignInAsync(user, isPersistent: false);
                         return RedirectToLocal(returnUrl);
                     }
@@ -295,6 +300,9 @@ namespace ContactManager.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
+            var account = UserManager.FindById(User.Identity.GetUserId());
+            _logger.Info("User {0} ({1}) logged out.", account.UserName, account.Email);
+
             AuthenticationManager.SignOut();
             return RedirectToAction("Index", "Home");
         }
