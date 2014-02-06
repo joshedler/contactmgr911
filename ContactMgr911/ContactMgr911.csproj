@@ -51,6 +51,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.0.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="LogentriesCore">
+      <HintPath>..\packages\logentries.core.2.4.1\lib\net40\LogentriesCore.dll</HintPath>
+    </Reference>
+    <Reference Include="LogentriesNLog">
+      <HintPath>..\packages\logentries.nlog.2.2.0\lib\net40\LogentriesNLog.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.1.0.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
