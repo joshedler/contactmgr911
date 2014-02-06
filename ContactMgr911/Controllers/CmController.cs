@@ -1,23 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using ContactManager.Models;
+using NLog;
 
 namespace ContactManager.Controllers
 {
     public class CmController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private readonly ApplicationDbContext _db = new ApplicationDbContext();
+
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         // GET: /Cm/
         public ActionResult Index()
         {
-            return View(db.Contacts.ToList());
+            _logger.Info("Index");
+
+            return View(_db.Contacts.ToList());
         }
 
         // GET: /Cm/Details/5
@@ -27,7 +28,7 @@ namespace ContactManager.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Contact contact = db.Contacts.Find(id);
+            Contact contact = _db.Contacts.Find(id);
             if (contact == null)
             {
                 return HttpNotFound();
@@ -52,8 +53,8 @@ namespace ContactManager.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Contacts.Add(contact);
-                db.SaveChanges();
+                _db.Contacts.Add(contact);
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -68,7 +69,7 @@ namespace ContactManager.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Contact contact = db.Contacts.Find(id);
+            Contact contact = _db.Contacts.Find(id);
             if (contact == null)
             {
                 return HttpNotFound();
@@ -86,8 +87,8 @@ namespace ContactManager.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(contact).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(contact).State = EntityState.Modified;
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(contact);
@@ -101,7 +102,7 @@ namespace ContactManager.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Contact contact = db.Contacts.Find(id);
+            Contact contact = _db.Contacts.Find(id);
             if (contact == null)
             {
                 return HttpNotFound();
@@ -115,9 +116,9 @@ namespace ContactManager.Controllers
         [Authorize(Roles = RoleNames.CanEdit)]
         public ActionResult DeleteConfirmed(int id)
         {
-            Contact contact = db.Contacts.Find(id);
-            db.Contacts.Remove(contact);
-            db.SaveChanges();
+            Contact contact = _db.Contacts.Find(id);
+            _db.Contacts.Remove(contact);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -125,7 +126,7 @@ namespace ContactManager.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }
